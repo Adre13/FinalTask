@@ -1,0 +1,66 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome"
+                access="global" controller="FinalTaskController">
+
+    <aura:attribute name="actors" type="String[]"/>
+    <aura:attribute name="selectedActor" type="String" default=""/>
+    <aura:attribute name="searchValue" type="String" default=""/>
+    <aura:attribute name="searchList" type="String[]"/>
+    <aura:attribute name="films" type="Map"/>
+    <aura:attribute name="filmsKey" type="String[]"/>
+    <aura:attribute name="currentPage" type="Integer" default="0"/>
+    <aura:attribute name="totalPages" type="Integer"/>
+    <aura:attribute name="paginationSize" type="Integer" default="3"/>
+
+    <aura:handler name="init" value="{!this}" action="{!c.init}"/>
+
+    <div class="slds-scope">
+        <div class="slds-size_1-of-2">
+            <div class="slds-page-header slds-align--absolute-center ">
+                <div class="slds-page-header__name">
+                    <div class="slds-page-header__name-title ">
+                        <h1>
+                            <span class="slds-page-header__title slds-truncate">Films With Actors</span>
+                        </h1>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="slds-grid slds-gutters slds-p-around_medium">
+            <div class="slds-col slds-size_2-of-12">
+                <lightning:select name="actorPickList" label="Actors" value="{!v.selectedActor}"
+                                  onchange="{!c.passTableInfo}">
+                    <aura:iteration items="{!v.actors}" var="actor">
+                        <option text="{!actor}" value="{!actor}"/>
+                    </aura:iteration>
+                </lightning:select>
+                <lightning:input label="Search" type="text" value="{!v.searchValue}"
+                                 onchange="{!c.selectSearchActors}"/>
+                <lightning:verticalNavigation selectedItem="{!v.searchValue}" onselect="{!c.selectSearchActors}">
+                    <lightning:verticalNavigationSection label="">
+                        <aura:iteration items="{!v.searchList}" var="item">
+                            <lightning:verticalNavigationItem label="{!item}" name="{!item}"/>
+                        </aura:iteration>
+                    </lightning:verticalNavigationSection>
+                </lightning:verticalNavigation>
+            </div>
+            <div class="slds-col slds-size_4-of-12">
+                <div>
+                    <aura:iteration items="{!v.filmsKey}" var="filmName">
+                        <lightning:card title="{!filmName}">
+                            <c:mapIteration filmsMap="{!v.films}" filmName="{!filmName}"/>
+                        </lightning:card>
+                    </aura:iteration>
+                </div>
+            </div>
+        </div>
+        <lightning:layout class="slds-size_1-of-2 slds-p-around_medium">
+            <lightning:button class="slds-size_1-of-2" label="Previous" disabled="{!v.currentPage == 0}" variant="brand"
+                              iconName="utility:back"
+                              onclick="{!c.previous}"/>
+            <lightning:button class="slds-size_1-of-2" label="Next" disabled="{!v.currentPage >= v.totalPages}"
+                              variant="brand"
+                              iconName="utility:forward" onclick="{!c.next}"/>
+        </lightning:layout>
+    </div>
+
+</aura:component>

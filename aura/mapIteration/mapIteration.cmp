@@ -1,0 +1,18 @@
+<!--
+ - Created by mdenisik on 10/24/2019.
+ -->
+
+<aura:component description="mapIteration">
+
+    <aura:attribute name="filmsMap" type="Map"/>
+    <aura:attribute name="filmName" type="String"/>
+    <aura:attribute name="actorsList" type="List"/>
+
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+
+    <ul class="slds-list_dotted slds-p-around_medium">
+        <aura:iteration items="{!v.actorsList}" var="actualActors">
+            <li>{!actualActors}</li>
+        </aura:iteration>
+    </ul>
+</aura:component>
